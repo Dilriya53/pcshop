@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ASTRO TECH</title>
+
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">ASTRO TECH</div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'home' %}#categories">Components</a>
+            <a href="{% url 'home' %}#products">Trending</a>
+            <a href="{% url 'home' %}#builder">Build</a>
+            <a href="{% url 'home' %}#deals">Deals</a>
+            <a href="{% url 'home' %}#support">Support</a>
+        </div>
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="nav-btn nav-profile-btn active">👤 Dashboard</a>
+                <a href="{% url 'logout' %}" class="nav-btn nav-logout-btn">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-btn">Login</a>
+            {% endif %}
+            <a href="#" class="cart-btn">Cart <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <!-- DASHBOARD SECTION -->
+    <section class="profile-container">
+        <div class="profile-wrapper">
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="profile-card">
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <span class="avatar-initials">{{ user.email|first|upper }}</span>
+                    </div>
+                    <div class="profile-header-info">
+                        <h1>{{ user.first_name|default:user.username }}</h1>
+                        <p class="profile-status">👤 Active Member</p>
+                    </div>
+                </div>
+
+                <!-- Profile Details -->
+                <div class="profile-details">
+                    <div class="details-section">
+                        <h2>📋 Account Information</h2>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <label>Username</label>
+                                <p>{{ user.username }}</p>
+                            </div>
+                            <div class="detail-item">
+                                <label>Email</label>
+                                <p>{{ user.email|default:"Not provided" }}</p>
+                            </div>
+                            <div class="detail-item">
+                                <label>First Name</label>
+                                <p>{{ user.first_name|default:"Not provided" }}</p>
+                            </div>
+                            <div class="detail-item">
+                                <label>Last Name</label>
+                                <p>{{ user.last_name|default:"Not provided" }}</p>
+                            </div>
+                            <div class="detail-item">
+                                <label>Account Status</label>
+                                <p>
+                                    {% if user.is_active %}
+                                        <span class="badge badge-success">✓ Active</span>
+                                    {% else %}
+                                        <span class="badge badge-danger">✗ Inactive</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="detail-item">
+                                <label>Member Since</label>
+                                <p>{{ user.date_joined|date:"M d, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Status Section -->
+                    <div class="details-section">
+                        <h2>🔐 Account Status</h2>
+                        <div class="status-info">
+                            <div class="status-item">
+                                <span class="status-label">Last Login</span>
+                                <span class="status-value">{{ user.last_login|default:"Never" }}</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Account Type</span>
+                                <span class="status-value">
+                                    {% if user.is_superuser %}
+                                        Administrator
+                                    {% elif user.is_staff %}
+                                        Staff Member
+                                    {% else %}
+                                        Regular User
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="profile-actions">
+                    <a href="{% url 'home' %}" class="btn btn-secondary">⬅ Back to Home</a>
+                    <a href="{% url 'logout' %}" class="btn btn-logout">🚪 Logout</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

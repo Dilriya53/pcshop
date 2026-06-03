@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ASTRO TECH</title>
+
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">ASTRO TECH</div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'home' %}#categories">Components</a>
+            <a href="{% url 'home' %}#products">Trending</a>
+            <a href="{% url 'home' %}#builder">Build</a>
+            <a href="{% url 'home' %}#deals">Deals</a>
+            <a href="{% url 'home' %}#support">Support</a>
+        </div>
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="nav-btn nav-profile-btn">👤 Dashboard</a>
+                <a href="{% url 'logout' %}" class="nav-btn nav-logout-btn">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-btn">Login</a>
+            {% endif %}
+            <a href="#" class="cart-btn">Cart <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <!-- LOGIN SECTION -->
+    <section class="login-container">
+        <div class="login-wrapper">
+            <div class="login-card">
+                <div class="login-header">
+                    <h1>ASTRO LOGIN</h1>
+                    <p class="login-subtitle">Welcome to ASTRO TECH</p>
+                </div>
+
+                <!-- Display Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST" class="login-form">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="email">📧 Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="your@email.com"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">🔐 Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="••••••••"
+                            required
+                            autocomplete="current-password"
+                        >
+                    </div>
+
+                    <button type="submit" class="btn-login">Login</button>
+                </form>
+
+                <div class="login-footer">
+                    <p style="color: #94a3b8; font-size: 13px; margin-top: 20px;">
+                        Login with your registered email address
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

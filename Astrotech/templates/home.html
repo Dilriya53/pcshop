@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTRO TECH</title>
+
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">ASTRO TECH</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#categories">Components</a>
+            <a href="#products">Trending</a>
+            <a href="#builder">Build</a>
+            <a href="#deals">Deals</a>
+            <a href="#support">Support</a>
+        </div>
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="nav-btn nav-profile-btn">👤 Dashboard</a>
+                <a href="{% url 'logout' %}" class="nav-btn nav-logout-btn">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-btn">Login</a>
+            {% endif %}
+            <a href="#" class="cart-btn">Cart <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <span class="eyebrow">Next-level Gaming Hardware</span>
+            <h1>ASTRO TECH</h1>
+            <h2>POWER BEYOND LIMITS</h2>
+            <p>
+                High-performance gaming PCs, premium hardware components,
+                RGB accessories, and fully customizable desktop systems
+                engineered for gamers, creators, and enthusiasts.
+            </p>
+            <div class="hero-buttons">
+                <a href="#builder" class="btn btn-primary">Build Your PC</a>
+                <a href="#categories" class="btn btn-secondary">Shop Components</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section id="categories" class="section section-alt">
+        <h2 class="section-title">SHOP BY CATEGORY</h2>
+        <div class="categories">
+            <div class="category-card"><h3>CPUs</h3><p>Intel & AMD Processors</p></div>
+            <div class="category-card"><h3>GPUs</h3><p>RTX & Radeon Graphics</p></div>
+            <div class="category-card"><h3>RAM</h3><p>DDR4 & DDR5 Memory</p></div>
+            <div class="category-card"><h3>Motherboards</h3><p>ATX & Gaming Boards</p></div>
+            <div class="category-card"><h3>Storage</h3><p>SSD & HDD Solutions</p></div>
+            <div class="category-card"><h3>Gaming Gear</h3><p>Keyboards, Mice & Headsets</p></div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section id="products" class="section">
+        <h2 class="section-title">TRENDING PRODUCTS</h2>
+        <div class="products">
+
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?q=80&w=1974&auto=format&fit=crop" alt="RTX 4070 Ti">
+                <div class="product-info">
+                    <h3>RTX 4070 Ti</h3>
+                    <div class="specs">12GB GDDR6X <br> Ray Tracing Support <br> Extreme Gaming Performance</div>
+                    <div class="price">&#8377;79,999</div>
+                    <button class="add-to-cart-btn">Add To Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1587202372583-49330a15584d?q=80&w=1974&auto=format&fit=crop" alt="Intel Core i9">
+                <div class="product-info">
+                    <h3>Intel Core i9</h3>
+                    <div class="specs">24 Core Processor <br> Turbo Boost Enabled <br> Ultra Performance</div>
+                    <div class="price">&#8377;52,999</div>
+                    <button class="add-to-cart-btn">Add To Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1540829917886-91ab031b1764?q=80&w=1974&auto=format&fit=crop" alt="RGB Gaming Keyboard">
+                <div class="product-info">
+                    <h3>RGB Gaming Keyboard</h3>
+                    <div class="specs">Mechanical Switches <br> RGB Lighting <br> Gamer Edition</div>
+                    <div class="price">&#8377;5,999</div>
+                    <button class="add-to-cart-btn">Add To Cart</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- DEALS -->
+    <section id="deals" class="section section-alt deals-section">
+        <h2 class="section-title">CURRENT DEALS</h2>
+        <div class="deals-grid">
+            <div class="deal-card">
+                <h3>Limited Time GPU Offer</h3>
+                <p>Up to 20% off on selected RTX and Radeon cards. Power your rig with next-gen performance.</p>
+            </div>
+            <div class="deal-card">
+                <h3>Bundle Savings</h3>
+                <p>Save ₹5,000 when you bundle CPU + motherboard + RAM together in a single build package.</p>
+            </div>
+            <div class="deal-card">
+                <h3>Free Shipping</h3>
+                <p>Enjoy free express delivery on orders above ₹15,000 across India.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PC BUILDER -->
+    <section id="builder" class="section">
+        <div class="builder">
+            <h2>Custom PC Builder</h2>
+            <p>
+                Choose compatible components step-by-step and
+                build your ultimate high-performance gaming rig
+                with live compatibility checking and pricing.
+            </p>
+            <a href="#" class="btn btn-primary">Start Building</a>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="section section-alt">
+        <h2 class="section-title">WHY CHOOSE ASTRO TECH</h2>
+        <div class="features">
+            <div class="feature-card"><h3>Custom Builds</h3><p>Create fully personalized gaming PCs with compatible premium hardware components.</p></div>
+            <div class="feature-card"><h3>Fast Delivery</h3><p>Secure packaging and fast delivery for all computer hardware and accessories.</p></div>
+            <div class="feature-card"><h3>Premium Support</h3><p>Dedicated technical support and RMA assistance for all customers.</p></div>
+            <div class="feature-card"><h3>Top Brands</h3><p>Products from ASUS, MSI, Intel, AMD, NVIDIA, Corsair and more.</p></div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="support">
+        <div class="footer-grid">
+            <div>
+                <div class="logo">ASTRO TECH</div>
+                <p>Power Beyond Limits</p>
+            </div>
+            <div>
+                <h4>Support</h4>
+                <p>Email: support@astrotech.com</p>
+                <p>Phone: +91 98765 43210</p>
+            </div>
+            <div>
+                <h4>Company</h4>
+                <p>Fast delivery, premium warranties, and expert technical support.</p>
+            </div>
+        </div>
+        <p class="footer-note">&#169; 2026 ASTRO TECH | Designed Using Python Django</p>
+    </footer>
+
+    <!-- MAIN JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>
