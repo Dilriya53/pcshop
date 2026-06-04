@@ -1,0 +1,297 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ASTRO TECH</title>
+
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        .admin-container {
+            min-height: calc(100vh - 80px);
+            padding: 40px 20px;
+            background: radial-gradient(circle at top right, rgba(59,130,246,0.15), transparent 30%),
+                        linear-gradient(180deg, #04060d 0%, #070b18 100%);
+        }
+
+        .admin-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            margin-bottom: 40px;
+        }
+
+        .admin-header h1 {
+            font-size: 48px;
+            font-family: 'Orbitron', sans-serif;
+            color: #60a5fa;
+            text-shadow: 0 0 40px rgba(96,165,250,0.5);
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .admin-nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .admin-nav-card {
+            background: linear-gradient(135deg, rgba(15,23,42,0.98) 0%, rgba(25,35,60,0.98) 100%);
+            border: 1.5px solid rgba(96,165,250,0.3);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .admin-nav-card:hover {
+            border-color: #60a5fa;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(96,165,250,0.25);
+        }
+
+        .admin-nav-card-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .admin-nav-card h3 {
+            color: #60a5fa;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .admin-nav-card-count {
+            font-size: 32px;
+            font-weight: 700;
+            color: #93c5fd;
+            margin-top: 10px;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(15,23,42,0.98) 0%, rgba(25,35,60,0.98) 100%);
+            border: 1.5px solid rgba(96,165,250,0.3);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .stat-card h4 {
+            color: #cbd5e1;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .table-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .table-card {
+            background: linear-gradient(135deg, rgba(15,23,42,0.98) 0%, rgba(25,35,60,0.98) 100%);
+            border: 1.5px solid rgba(96,165,250,0.3);
+            border-radius: 16px;
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .table-card h3 {
+            color: #60a5fa;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #cbd5e1;
+        }
+
+        .admin-table th {
+            background: rgba(96,165,250,0.1);
+            color: #60a5fa;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1.5px solid rgba(96,165,250,0.3);
+        }
+
+        .admin-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(96,165,250,0.15);
+        }
+
+        .admin-table tr:hover {
+            background: rgba(96,165,250,0.05);
+        }
+
+        @media (max-width: 1024px) {
+            .table-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-nav {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">ASTRO TECH</div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'home' %}#categories">Components</a>
+            <a href="{% url 'home' %}#products">Trending</a>
+            <a href="{% url 'home' %}#builder">Build</a>
+            <a href="{% url 'home' %}#deals">Deals</a>
+            <a href="{% url 'home' %}#support">Support</a>
+        </div>
+        <div class="nav-actions">
+            {% if user.is_staff %}
+                <a href="{% url 'admin_dashboard' %}" class="nav-btn">⚙️ Admin</a>
+                <a href="{% url 'logout' %}" class="nav-btn">Logout</a>
+            {% else %}
+                <a href="{% url 'register' %}" class="nav-btn">Register</a>
+                <a href="{% url 'login' %}" class="nav-btn">Login</a>
+            {% endif %}
+            <a href="#" class="cart-btn">Cart <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <!-- ADMIN CONTENT -->
+    <section class="admin-container">
+        <div class="admin-wrapper">
+            <div class="admin-header">
+                <h1>🛡️ ADMIN DASHBOARD</h1>
+                <p style="color: #cbd5e1; font-size: 16px;">Welcome, {{ user.first_name|default:user.username }}!</p>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" style="margin-bottom: 20px;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Quick Stats -->
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <h4>Total Users</h4>
+                    <div class="number">{{ total_users }}</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Admin Users</h4>
+                    <div class="number">{{ total_admin }}</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Total Products</h4>
+                    <div class="number">{{ total_products }}</div>
+                </div>
+            </div>
+
+            <!-- Admin Navigation -->
+            <div class="admin-nav">
+                <a href="{% url 'admin_users' %}" class="admin-nav-card">
+                    <div class="admin-nav-card-icon">👥</div>
+                    <h3>Manage Users</h3>
+                    <p style="color: #94a3b8; font-size: 13px;">Add, edit, delete users</p>
+                    <div class="admin-nav-card-count">{{ total_users }}</div>
+                </a>
+                <a href="{% url 'admin_products' %}" class="admin-nav-card">
+                    <div class="admin-nav-card-icon">📦</div>
+                    <h3>Manage Products</h3>
+                    <p style="color: #94a3b8; font-size: 13px;">Add, edit, delete products</p>
+                    <div class="admin-nav-card-count">{{ total_products }}</div>
+                </a>
+            </div>
+
+            <!-- Recent Data -->
+            <div class="table-section">
+                <div class="table-card">
+                    <h3>👥 Recent Users</h3>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in recent_users %}
+                            <tr>
+                                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.date_joined|date:"M d, Y" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-card">
+                    <h3>📦 Recent Products</h3>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in recent_products %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>${{ product.price }}</td>
+                                <td>{{ product.stock }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

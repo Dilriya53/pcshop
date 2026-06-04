@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products - ASTRO TECH</title>
+
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        .admin-container {
+            min-height: calc(100vh - 80px);
+            padding: 40px 20px;
+            background: radial-gradient(circle at top right, rgba(59,130,246,0.15), transparent 30%),
+                        linear-gradient(180deg, #04060d 0%, #070b18 100%);
+        }
+
+        .admin-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .admin-header h1 {
+            font-size: 36px;
+            font-family: 'Orbitron', sans-serif;
+            color: #60a5fa;
+            text-shadow: 0 0 40px rgba(96,165,250,0.5);
+            letter-spacing: 2px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transform: translateY(-2px);
+        }
+
+        .table-card {
+            background: linear-gradient(135deg, rgba(15,23,42,0.98) 0%, rgba(25,35,60,0.98) 100%);
+            border: 1.5px solid rgba(96,165,250,0.3);
+            border-radius: 16px;
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #cbd5e1;
+        }
+
+        .admin-table th {
+            background: rgba(96,165,250,0.1);
+            color: #60a5fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1.5px solid rgba(96,165,250,0.3);
+        }
+
+        .admin-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(96,165,250,0.15);
+        }
+
+        .admin-table tr:hover {
+            background: rgba(96,165,250,0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-category {
+            background: rgba(168,85,247,0.2);
+            color: #d8b4fe;
+            border: 1px solid rgba(168,85,247,0.4);
+        }
+
+        .badge-stock-high {
+            background: rgba(34,197,94,0.2);
+            color: #86efac;
+            border: 1px solid rgba(34,197,94,0.4);
+        }
+
+        .badge-stock-low {
+            background: rgba(239,68,68,0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239,68,68,0.4);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-edit, .btn-delete {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+        }
+
+        .btn-edit {
+            background: rgba(96,165,250,0.2);
+            color: #93c5fd;
+            border: 1px solid rgba(96,165,250,0.4);
+        }
+
+        .btn-edit:hover {
+            background: rgba(96,165,250,0.3);
+        }
+
+        .btn-delete {
+            background: rgba(239,68,68,0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239,68,68,0.4);
+        }
+
+        .btn-delete:hover {
+            background: rgba(239,68,68,0.3);
+        }
+
+        .breadcrumb {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">ASTRO TECH</div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+        </div>
+        <div class="nav-actions">
+            {% if user.is_staff %}
+                <a href="{% url 'admin_dashboard' %}" class="nav-btn">⚙️ Admin</a>
+                <a href="{% url 'logout' %}" class="nav-btn">Logout</a>
+            {% endif %}
+            <a href="#" class="cart-btn">Cart <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <!-- ADMIN CONTENT -->
+    <section class="admin-container">
+        <div class="admin-wrapper">
+            <div class="breadcrumb">
+                <a href="{% url 'admin_dashboard' %}">🏠 Dashboard</a> / 📦 Manage Products
+            </div>
+
+            <div class="admin-header">
+                <h1>📦 MANAGE PRODUCTS</h1>
+                <a href="{% url 'admin_add_product' %}" class="btn-primary">+ Add New Product</a>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" style="margin-bottom: 20px;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Products Table -->
+            <div class="table-card">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>
+                                <span class="badge badge-category">
+                                    {% for cat_code, cat_name in categories %}
+                                        {% if cat_code == product.category %}{{ cat_name }}{% endif %}
+                                    {% endfor %}
+                                </span>
+                            </td>
+                            <td>${{ product.price }}</td>
+                            <td>
+                                {% if product.stock > 10 %}
+                                    <span class="badge badge-stock-high">{{ product.stock }} units</span>
+                                {% else %}
+                                    <span class="badge badge-stock-low">{{ product.stock }} units</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ product.created_at|date:"M d, Y" }}</td>
+                            <td>
+                                <div class="action-btns">
+                                    <a href="{% url 'admin_edit_product' product.id %}" class="btn-edit">Edit</a>
+                                    <a href="{% url 'admin_delete_product' product.id %}" class="btn-delete" onclick="return confirm('Delete this product?');">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 30px;">No products found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <p style="color: #94a3b8; margin-top: 20px; text-align: center;">Total Products: {{ total_products }}</p>
+        </div>
+    </section>
+
+</body>
+</html>

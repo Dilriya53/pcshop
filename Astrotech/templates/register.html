@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - ASTRO TECH</title>
+    <title>Register - ASTRO TECH</title>
 
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -41,13 +41,13 @@
         </div>
     </nav>
 
-    <!-- LOGIN SECTION -->
+    <!-- REGISTER SECTION -->
     <section class="login-container">
         <div class="login-wrapper">
             <div class="login-card">
                 <div class="login-header">
-                    <h1>ASTRO LOGIN</h1>
-                    <p class="login-subtitle">Welcome to ASTRO TECH</p>
+                    <h1>ASTRO REGISTER</h1>
+                    <p class="login-subtitle">Create Your ASTRO TECH Account</p>
                 </div>
 
                 <!-- Display Messages -->
@@ -62,6 +62,31 @@
                 <form method="POST" class="login-form">
                     {% csrf_token %}
                     
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label for="first_name">👤 First Name</label>
+                            <input 
+                                type="text" 
+                                id="first_name" 
+                                name="first_name" 
+                                placeholder="John"
+                                value="{{ first_name }}"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">👤 Last Name</label>
+                            <input 
+                                type="text" 
+                                id="last_name" 
+                                name="last_name" 
+                                placeholder="Doe"
+                                value="{{ last_name }}"
+                            >
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="email">📧 Email</label>
                         <input 
@@ -69,6 +94,7 @@
                             id="email" 
                             name="email" 
                             placeholder="your@email.com"
+                            value="{{ email }}"
                             required
                             autocomplete="email"
                         >
@@ -82,20 +108,34 @@
                             name="password" 
                             placeholder="••••••••"
                             required
-                            autocomplete="current-password"
+                            autocomplete="new-password"
+                            minlength="6"
+                        >
+                        <small style="color: #94a3b8; font-size: 12px; margin-top: 4px;">
+                            Minimum 6 characters
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">🔐 Confirm Password</label>
+                        <input 
+                            type="password" 
+                            id="confirm_password" 
+                            name="confirm_password" 
+                            placeholder="••••••••"
+                            required
+                            autocomplete="new-password"
+                            minlength="6"
                         >
                     </div>
 
-                    <button type="submit" class="btn-login">Login</button>
+                    <button type="submit" class="btn-login">Create Account</button>
                 </form>
 
                 <div class="login-footer">
                     <p style="color: #94a3b8; font-size: 13px; margin-top: 20px;">
-                        Login with your registered email address
-                    </p>
-                    <p style="color: #94a3b8; font-size: 13px; margin-top: 16px;">
-                        Don't have an account? 
-                        <a href="{% url 'register' %}" style="color: #60a5fa; font-weight: 600; cursor: pointer;">Register here</a>
+                        Already have an account? 
+                        <a href="{% url 'login' %}" style="color: #60a5fa; font-weight: 600; cursor: pointer;">Login here</a>
                     </p>
                 </div>
             </div>

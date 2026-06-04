@@ -19,15 +19,33 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from django.views.generic import TemplateView
-from views import login_view, dashboard_view, logout_view
+from views import (
+    login_view, register_view, dashboard_view, logout_view,
+    admin_dashboard_view, admin_users_view, admin_add_user_view,
+    admin_edit_user_view, admin_delete_user_view,
+    admin_products_view, admin_add_product_view,
+    admin_edit_product_view, admin_delete_product_view
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin-panel/', admin.site.urls),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
     path('dashboard/', dashboard_view, name='dashboard'),
     path('logout/', logout_view, name='logout'),
+    
+    # ADMIN ROUTES
+    path('admin/', admin_dashboard_view, name='admin_dashboard'),
+    path('admin/users/', admin_users_view, name='admin_users'),
+    path('admin/users/add/', admin_add_user_view, name='admin_add_user'),
+    path('admin/users/<int:user_id>/edit/', admin_edit_user_view, name='admin_edit_user'),
+    path('admin/users/<int:user_id>/delete/', admin_delete_user_view, name='admin_delete_user'),
+    path('admin/products/', admin_products_view, name='admin_products'),
+    path('admin/products/add/', admin_add_product_view, name='admin_add_product'),
+    path('admin/products/<int:product_id>/edit/', admin_edit_product_view, name='admin_edit_product'),
+    path('admin/products/<int:product_id>/delete/', admin_delete_product_view, name='admin_delete_product'),
 ]
 
 if settings.DEBUG:

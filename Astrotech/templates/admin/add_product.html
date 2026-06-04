@@ -1,0 +1,272 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - ASTRO TECH</title>
+
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        .admin-container {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+            background: radial-gradient(circle at top right, rgba(59,130,246,0.15), transparent 30%),
+                        linear-gradient(180deg, #04060d 0%, #070b18 100%);
+        }
+
+        .admin-wrapper {
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .form-card {
+            background: linear-gradient(135deg, rgba(15,23,42,0.98) 0%, rgba(25,35,60,0.98) 100%);
+            border: 1.5px solid rgba(96,165,250,0.3);
+            border-radius: 28px;
+            padding: 50px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 50px rgba(59,130,246,0.15);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header h1 {
+            font-size: 36px;
+            font-family: 'Orbitron', sans-serif;
+            color: #60a5fa;
+            text-shadow: 0 0 40px rgba(96,165,250,0.5);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #e0e7ff;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 16px 18px;
+            background: rgba(51,65,85,0.5);
+            border: 1.5px solid rgba(96,165,250,0.2);
+            border-radius: 12px;
+            color: #f8fafc;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group select option {
+            background: #1e293b;
+            color: #f8fafc;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #64748b;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #60a5fa;
+            background: rgba(51,65,85,0.7);
+            box-shadow: 0 0 0 4px rgba(96,165,250,0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(59,130,246,0.35);
+        }
+
+        .btn-cancel {
+            background: rgba(148,163,184,0.2);
+            color: #cbd5e1;
+            border: 1px solid rgba(148,163,184,0.4);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(148,163,184,0.3);
+        }
+
+        .breadcrumb {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">ASTRO TECH</div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+        </div>
+        <div class="nav-actions">
+            {% if user.is_staff %}
+                <a href="{% url 'admin_dashboard' %}" class="nav-btn">⚙️ Admin</a>
+                <a href="{% url 'logout' %}" class="nav-btn">Logout</a>
+            {% endif %}
+            <a href="#" class="cart-btn">Cart <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <!-- ADMIN CONTENT -->
+    <section class="admin-container">
+        <div class="admin-wrapper">
+            <div class="breadcrumb">
+                <a href="{% url 'admin_dashboard' %}">🏠 Dashboard</a> / 
+                <a href="{% url 'admin_products' %}">📦 Products</a> / ➕ Add Product
+            </div>
+
+            <div class="form-card">
+                <div class="form-header">
+                    <h1>➕ ADD PRODUCT</h1>
+                    <p>Create a new product</p>
+                </div>
+
+                <!-- Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" style="margin-bottom: 20px;">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="name">Product Name *</label>
+                        <input type="text" id="name" name="name" placeholder="e.g., RTX 4090 Graphics Card" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Category *</label>
+                            <select id="category" name="category" required>
+                                <option value="">-- Select Category --</option>
+                                {% for code, name in categories %}
+                                    <option value="{{ code }}">{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price">Price ($) *</label>
+                            <input type="number" id="price" name="price" placeholder="999.99" step="0.01" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stock">Stock Quantity *</label>
+                            <input type="number" id="stock" name="stock" placeholder="0" min="0" value="0" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="image_url">Image URL</label>
+                            <input type="url" id="image_url" name="image_url" placeholder="https://example.com/image.jpg">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <textarea id="description" name="description" placeholder="Enter product description..." required></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-submit">Add Product</button>
+                        <a href="{% url 'admin_products' %}" class="btn btn-cancel">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
